@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#000"
-        tools:context="socialcops.piyush6348.com.socialcopsproblem.CameraActivity" />
+        tools:context="socialcops.piyush6348.com.socialcopsproblem.activities.CameraActivity" />
 
   <!--  <Button
         android:layout_width="wrap_content"

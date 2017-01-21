@@ -2,7 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <socialcops.piyush6348.com.socialcopsproblem.AutoFitTextureView
+    <socialcops.piyush6348.com.socialcopsproblem.model.AutoFitTextureView
         android:id="@+id/texture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

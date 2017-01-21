@@ -1,4 +1,4 @@
-package socialcops.piyush6348.com.socialcopsproblem;
+package socialcops.piyush6348.com.socialcopsproblem.fragments;
 
 /**
  * Created by dell on 1/21/2017.
@@ -59,6 +59,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+
+import socialcops.piyush6348.com.socialcopsproblem.model.AutoFitTextureView;
+import socialcops.piyush6348.com.socialcopsproblem.R;
 
 public class Camera2BasicFragment extends Fragment
         implements View.OnClickListener, FragmentCompat.OnRequestPermissionsResultCallback {

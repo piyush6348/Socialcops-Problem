@@ -1,4 +1,4 @@
-package socialcops.piyush6348.com.socialcopsproblem;
+package socialcops.piyush6348.com.socialcopsproblem.model;
 
 /**
  * Created by dell on 1/21/2017.

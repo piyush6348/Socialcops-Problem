@@ -1,4 +1,4 @@
-package socialcops.piyush6348.com.socialcopsproblem;
+package socialcops.piyush6348.com.socialcopsproblem.fragments;
 
 /**
  * Created by dell on 1/21/2017.
@@ -51,6 +51,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+
+import socialcops.piyush6348.com.socialcopsproblem.model.AutoFitTextureView;
+import socialcops.piyush6348.com.socialcopsproblem.R;
 
 public class Camera2VideoFragment extends Fragment
         implements View.OnClickListener, FragmentCompat.OnRequestPermissionsResultCallback {
@@ -639,7 +642,7 @@ public class Camera2VideoFragment extends Fragment
                             // UI
                             mButtonVideo.setText(R.string.stop);
                             mIsRecordingVideo = true;
-
+                            Log.e(TAG, "run: "+"recording started" );
                             // Start recording
                             mMediaRecorder.start();
                         }
@@ -674,8 +677,12 @@ public class Camera2VideoFragment extends Fragment
         mIsRecordingVideo = false;
         mButtonVideo.setText(R.string.record);
         // Stop recording
-        mMediaRecorder.stop();
-        mMediaRecorder.reset();
+        try{
+            mMediaRecorder.stop();
+            mMediaRecorder.reset();
+        }catch (Exception e)
+        {
+        }
 
         Activity activity = getActivity();
         if (null != activity) {
@@ -684,7 +691,22 @@ public class Camera2VideoFragment extends Fragment
             Log.d(TAG, "Video saved: " + mNextVideoAbsolutePath);
         }
         mNextVideoAbsolutePath = null;
+
+        //mMediaRecorder.release();
         startPreview();
+
+
+       /* mIsRecordingVideo = false;
+        mButtonVideo.setText(R.string.record);
+        Activity activity = getActivity();
+        if (null != activity) {
+            //Toast.makeText(activity, "Video saved: " + getVideoFile(activity),
+            Toast.makeText(activity, "Video saved: " + mNextVideoAbsolutePath,
+                    Toast.LENGTH_SHORT).show();
+        }
+               startPreview();
+        closeCamera();
+        openCamera(mTextureView.getWidth(), mTextureView.getHeight());*/
     }
 
     /**
