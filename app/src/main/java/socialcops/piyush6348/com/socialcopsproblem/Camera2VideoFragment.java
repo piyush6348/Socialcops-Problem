@@ -40,6 +40,7 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -262,7 +263,18 @@ public class Camera2VideoFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_camera2_video, container, false);
+        View view= inflater.inflate(R.layout.fragment_camera2_video, container, false);
+
+        ImageButton shiftToPicture=(ImageButton)view.findViewById(R.id.shift_to_picture);
+        shiftToPicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.container, Camera2BasicFragment.newInstance())
+                        .commit();
+            }
+        });
+        return view;
     }
 
     @Override
