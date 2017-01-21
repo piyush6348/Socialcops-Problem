@@ -48,6 +48,11 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.kinvey.android.Client;
+import com.kinvey.java.core.MediaHttpUploader;
+import com.kinvey.java.core.UploaderProgressListener;
+import com.kinvey.java.model.FileMetaData;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -62,6 +67,7 @@ import java.util.concurrent.TimeUnit;
 
 import socialcops.piyush6348.com.socialcopsproblem.model.AutoFitTextureView;
 import socialcops.piyush6348.com.socialcopsproblem.R;
+import socialcops.piyush6348.com.socialcopsproblem.utils.Constants;
 
 public class Camera2BasicFragment extends Fragment
         implements View.OnClickListener, FragmentCompat.OnRequestPermissionsResultCallback {
@@ -71,7 +77,7 @@ public class Camera2BasicFragment extends Fragment
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
     private static final int REQUEST_CAMERA_PERMISSION = 1;
     private static final String FRAGMENT_DIALOG = "dialog";
-
+    String msg="";
     static {
         ORIENTATIONS.append(Surface.ROTATION_0, 90);
         ORIENTATIONS.append(Surface.ROTATION_90, 0);
@@ -830,6 +836,30 @@ public class Camera2BasicFragment extends Fragment
                                                @NonNull TotalCaptureResult result) {
                     showToast("Saved: " + mFile);
                     Log.d(TAG, mFile.toString());
+
+                    final Client mKinveyClient = new Client.Builder(Constants.APP_ID, Constants.APP_SECRET
+                            , getActivity()).build();
+                    mKinveyClient.file().upload(mFile, new UploaderProgressListener() {
+                        @Override
+                        public void progressChanged(MediaHttpUploader mediaHttpUploader) throws IOException {
+                            Log.i(TAG, "upload progress: " + mediaHttpUploader.getUploadState());
+                            msg="progress in between";
+                        }
+
+                        @Override
+                        public void onSuccess(FileMetaData fileMetaData) {
+                            Log.i(TAG, "successfully upload file");
+                            msg="successfully upload file";
+                        }
+
+                        @Override
+                        public void onFailure(Throwable throwable) {
+                            Log.e(TAG, "failed to upload file.", throwable);
+                            msg="failed to upload file.";
+                        }
+                    });
+
+                    Toast.makeText(getActivity(),msg, Toast.LENGTH_SHORT).show();
                     unlockFocus();
                 }
             };

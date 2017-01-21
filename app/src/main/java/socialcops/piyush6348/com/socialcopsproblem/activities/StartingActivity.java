@@ -36,10 +36,10 @@ public class StartingActivity extends AppCompatActivity {
         final Intent intent=new Intent(StartingActivity.this,CameraActivity.class);
         SharedPreferences prefs = getSharedPreferences(Constants.SHARED_PREFS_NAME, MODE_PRIVATE);
         String authStr = prefs.getString("auth", null);
-        if (authStr == "done") {
+        //if (authStr == "done") {
             startActivity(intent);
             finish();
-        }
+       // }
 
         final Client mKinveyClient = new Client.Builder(Constants.APP_ID, Constants.APP_SECRET
                 , this.getApplicationContext()).build();

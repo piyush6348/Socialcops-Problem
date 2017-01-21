@@ -43,6 +43,12 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.kinvey.android.Client;
+import com.kinvey.java.core.MediaHttpUploader;
+import com.kinvey.java.core.UploaderProgressListener;
+import com.kinvey.java.model.FileMetaData;
+
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,6 +60,7 @@ import java.util.concurrent.TimeUnit;
 
 import socialcops.piyush6348.com.socialcopsproblem.model.AutoFitTextureView;
 import socialcops.piyush6348.com.socialcopsproblem.R;
+import socialcops.piyush6348.com.socialcopsproblem.utils.Constants;
 
 public class Camera2VideoFragment extends Fragment
         implements View.OnClickListener, FragmentCompat.OnRequestPermissionsResultCallback {
@@ -70,6 +77,7 @@ public class Camera2VideoFragment extends Fragment
             Manifest.permission.CAMERA,
             Manifest.permission.RECORD_AUDIO,
     };
+    String msg;
 
     static {
         DEFAULT_ORIENTATIONS.append(Surface.ROTATION_0, 90);
@@ -683,6 +691,31 @@ public class Camera2VideoFragment extends Fragment
         }catch (Exception e)
         {
         }
+
+        File file=new File(mNextVideoAbsolutePath);
+        final Client mKinveyClient = new Client.Builder(Constants.APP_ID, Constants.APP_SECRET
+                , getActivity()).build();
+        mKinveyClient.file().upload(file, new UploaderProgressListener() {
+            @Override
+            public void progressChanged(MediaHttpUploader mediaHttpUploader) throws IOException {
+                Log.i(TAG, "upload progress: " + mediaHttpUploader.getUploadState());
+                msg="progress in between";
+            }
+
+            @Override
+            public void onSuccess(FileMetaData fileMetaData) {
+                Log.i(TAG, "successfully upload file");
+                msg="successfully upload file";
+            }
+
+            @Override
+            public void onFailure(Throwable throwable) {
+                Log.e(TAG, "failed to upload file.", throwable);
+                msg="failed to upload file.";
+            }
+        });
+
+        Toast.makeText(getActivity(),msg, Toast.LENGTH_SHORT).show();
 
         Activity activity = getActivity();
         if (null != activity) {
