@@ -1,11 +1,9 @@
 package socialcops.piyush6348.com.socialcopsproblem.activities;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,31 +16,29 @@ import socialcops.piyush6348.com.socialcopsproblem.R;
 import socialcops.piyush6348.com.socialcopsproblem.adapter.ImageAdapter;
 
 public class UploadedData extends AppCompatActivity {
-    public static String path="/storage/emulated/0/Android/data/";
+    public static String path = "/storage/emulated/0/Android/data/";
     private GridView gridView;
     private ImageAdapter imageAdapter;
     private File[] fList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_uploaded_data);
 
-        path=path+"socialcops.piyush6348.com.socialcopsproblem"+"/files/";
+        path = path + "socialcops.piyush6348.com.socialcopsproblem" + "/files/";
         defineView();
-        fList=loadData();
-        imageAdapter=new ImageAdapter(fList,UploadedData.this);
+        fList = loadData();
+        imageAdapter = new ImageAdapter(fList, UploadedData.this);
         gridView.setAdapter(imageAdapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if(fList[i].getName().endsWith(".jpg"))
-                {
+                if (fList[i].getName().endsWith(".jpg")) {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setDataAndType(Uri.parse(fList[i].getAbsolutePath()),"image/*");
+                    intent.setDataAndType(Uri.parse(fList[i].getAbsolutePath()), "image/*");
                     startActivity(intent);
-                }
-                else
-                {
+                } else {
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(fList[i].getAbsolutePath()));
                     intent.setDataAndType(Uri.parse(fList[i].getAbsolutePath()), "video/mp4");
                     startActivity(intent);
@@ -54,7 +50,7 @@ public class UploadedData extends AppCompatActivity {
     private File[] loadData() {
 
         final String[] EXTENSIONS = new String[]{
-                "jpg","mp4" // and other formats you need
+                "jpg", "mp4" // and other formats you need
         };
         // filter to identify images based on their extensions
         final FilenameFilter IMAGE_FILTER = new FilenameFilter() {
@@ -64,7 +60,7 @@ public class UploadedData extends AppCompatActivity {
                 for (final String ext : EXTENSIONS) {
                     if (name.endsWith("." + ext)) {
                         {
-                            Log.e("accept: ",name );
+                            Log.e("accept: ", name);
                             return (true);
                         }
                     }
@@ -73,9 +69,9 @@ public class UploadedData extends AppCompatActivity {
             }
         };
 
-        File dir= new File(path);
-        Log.e("loadData: ",dir.getAbsolutePath()+"hi" );
-        File[] filelist = dir.listFiles(IMAGE_FILTER );
+        File dir = new File(path);
+        Log.e("loadData: ", dir.getAbsolutePath() + "hi");
+        File[] filelist = dir.listFiles(IMAGE_FILTER);
 
         return filelist;
         /*
@@ -101,6 +97,6 @@ public class UploadedData extends AppCompatActivity {
     }
 
     private void defineView() {
-        gridView=(GridView)findViewById(R.id.grid_view);
+        gridView = (GridView) findViewById(R.id.grid_view);
     }
 }

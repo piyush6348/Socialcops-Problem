@@ -50,7 +50,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.kinvey.android.Client;
 import com.kinvey.java.core.MediaHttpUploader;
 import com.kinvey.java.core.UploaderProgressListener;
 import com.kinvey.java.model.FileMetaData;
@@ -68,10 +67,9 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 import socialcops.piyush6348.com.socialcopsproblem.MainApplication;
+import socialcops.piyush6348.com.socialcopsproblem.R;
 import socialcops.piyush6348.com.socialcopsproblem.activities.UploadedData;
 import socialcops.piyush6348.com.socialcopsproblem.model.AutoFitTextureView;
-import socialcops.piyush6348.com.socialcopsproblem.R;
-import socialcops.piyush6348.com.socialcopsproblem.utils.Constants;
 
 public class Camera2BasicFragment extends Fragment
         implements View.OnClickListener, FragmentCompat.OnRequestPermissionsResultCallback {
@@ -81,7 +79,8 @@ public class Camera2BasicFragment extends Fragment
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
     private static final int REQUEST_CAMERA_PERMISSION = 1;
     private static final String FRAGMENT_DIALOG = "dialog";
-    String msg="";
+    String msg = "";
+
     static {
         ORIENTATIONS.append(Surface.ROTATION_0, 90);
         ORIENTATIONS.append(Surface.ROTATION_90, 0);
@@ -332,12 +331,14 @@ public class Camera2BasicFragment extends Fragment
                 }
             }
         }
+
         @Override
         public void onCaptureProgressed(@NonNull CameraCaptureSession session,
                                         @NonNull CaptureRequest request,
                                         @NonNull CaptureResult partialResult) {
             process(partialResult);
         }
+
         @Override
         public void onCaptureCompleted(@NonNull CameraCaptureSession session,
                                        @NonNull CaptureRequest request,
@@ -419,15 +420,15 @@ public class Camera2BasicFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view= inflater.inflate(R.layout.fragment_camera2_basic, container, false);
+        View view = inflater.inflate(R.layout.fragment_camera2_basic, container, false);
 
-        ImageButton shiftToVideo=(ImageButton) view.findViewById(R.id.shift_to_video);
-        Button uploaded=(Button) view.findViewById(R.id.uploads);
+        ImageButton shiftToVideo = (ImageButton) view.findViewById(R.id.shift_to_video);
+        ImageButton uploaded = (ImageButton) view.findViewById(R.id.uploads);
 
         uploaded.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getActivity(), UploadedData.class);
+                Intent intent = new Intent(getActivity(), UploadedData.class);
                 startActivity(intent);
             }
         });
@@ -854,23 +855,23 @@ public class Camera2BasicFragment extends Fragment
                         @Override
                         public void progressChanged(MediaHttpUploader mediaHttpUploader) throws IOException {
                             Log.i(TAG, "upload progress: " + mediaHttpUploader.getUploadState());
-                            msg="progress in between";
+                            msg = "progress in between";
                         }
 
                         @Override
                         public void onSuccess(FileMetaData fileMetaData) {
                             Log.i(TAG, "successfully upload file");
-                            msg="successfully upload file";
+                            msg = "successfully upload file";
                         }
 
                         @Override
                         public void onFailure(Throwable throwable) {
                             Log.e(TAG, "failed to upload file.", throwable);
-                            msg="failed to upload file.";
+                            msg = "failed to upload file.";
                         }
                     });
 
-                    Toast.makeText(getActivity(),msg, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
                     unlockFocus();
                 }
             };

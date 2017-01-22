@@ -13,6 +13,7 @@ import socialcops.piyush6348.com.socialcopsproblem.utils.Constants;
 
 public class MainApplication extends Application {
     private static Client mKinveyClient;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -20,12 +21,12 @@ public class MainApplication extends Application {
     }
 
     private void defineClient() {
-        Log.e( "defineClient: ","running" );
+        Log.e("defineClient: ", "running");
         mKinveyClient = new Client.Builder(Constants.APP_ID, Constants.APP_SECRET
                 , getApplicationContext()).build();
     }
-    public static Client getClient()
-    {
+
+    public static Client getClient() {
         return mKinveyClient;
     }
 }

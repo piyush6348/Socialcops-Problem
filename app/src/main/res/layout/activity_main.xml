@@ -8,18 +8,6 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#000"
+        android:background="@color/black"
         tools:context="socialcops.piyush6348.com.socialcopsproblem.activities.CameraActivity" />
-
-  <!--  <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Record a video"
-        android:id="@+id/record_video"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Click a picture"
-        android:id="@+id/click_picture"/>-->
 </LinearLayout>

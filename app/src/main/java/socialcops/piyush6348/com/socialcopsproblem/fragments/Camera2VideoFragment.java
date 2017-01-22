@@ -3,6 +3,7 @@ package socialcops.piyush6348.com.socialcopsproblem.fragments;
 /**
  * Created by dell on 1/21/2017.
  */
+
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -44,7 +45,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.kinvey.android.Client;
 import com.kinvey.java.core.MediaHttpUploader;
 import com.kinvey.java.core.UploaderProgressListener;
 import com.kinvey.java.model.FileMetaData;
@@ -60,10 +60,9 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 import socialcops.piyush6348.com.socialcopsproblem.MainApplication;
+import socialcops.piyush6348.com.socialcopsproblem.R;
 import socialcops.piyush6348.com.socialcopsproblem.activities.UploadedData;
 import socialcops.piyush6348.com.socialcopsproblem.model.AutoFitTextureView;
-import socialcops.piyush6348.com.socialcopsproblem.R;
-import socialcops.piyush6348.com.socialcopsproblem.utils.Constants;
 
 public class Camera2VideoFragment extends Fragment
         implements View.OnClickListener, FragmentCompat.OnRequestPermissionsResultCallback {
@@ -277,15 +276,15 @@ public class Camera2VideoFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view= inflater.inflate(R.layout.fragment_camera2_video, container, false);
+        View view = inflater.inflate(R.layout.fragment_camera2_video, container, false);
 
-        ImageButton shiftToPicture=(ImageButton)view.findViewById(R.id.shift_to_picture);
-        Button uploadsVideoFrag=(Button) view.findViewById(R.id.uploadsV);
+        ImageButton shiftToPicture = (ImageButton) view.findViewById(R.id.shift_to_picture);
+        ImageButton uploadsVideoFrag = (ImageButton) view.findViewById(R.id.uploadsV);
 
         uploadsVideoFrag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getActivity(), UploadedData.class);
+                Intent intent = new Intent(getActivity(), UploadedData.class);
                 startActivity(intent);
             }
         });
@@ -662,7 +661,7 @@ public class Camera2VideoFragment extends Fragment
                             // UI
                             mButtonVideo.setText(R.string.stop);
                             mIsRecordingVideo = true;
-                            Log.e(TAG, "run: "+"recording started" );
+                            Log.e(TAG, "run: " + "recording started");
                             // Start recording
                             mMediaRecorder.start();
                         }
@@ -701,44 +700,42 @@ public class Camera2VideoFragment extends Fragment
         try {
             mPreviewSession.stopRepeating();
             mPreviewSession.abortCaptures();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        Thread thread=new Thread()
-        {
+        Thread thread = new Thread() {
             @Override
             public void run() {
                 super.run();
-                if(mMediaRecorder!=null)
-                {
+                if (mMediaRecorder != null) {
                     mMediaRecorder.stop();
                     mMediaRecorder.reset();
                 }
             }
         };
         thread.start();
-        File file=new File(mNextVideoAbsolutePath);
+        File file = new File(mNextVideoAbsolutePath);
         MainApplication.getClient().file().upload(file, new UploaderProgressListener() {
             @Override
             public void progressChanged(MediaHttpUploader mediaHttpUploader) throws IOException {
                 Log.i(TAG, "upload progress: " + mediaHttpUploader.getUploadState());
-                msg="progress in between";
+                msg = "progress in between";
             }
 
             @Override
             public void onSuccess(FileMetaData fileMetaData) {
                 Log.i(TAG, "successfully upload file");
-                msg="successfully upload file";
+                msg = "successfully upload file";
             }
 
             @Override
             public void onFailure(Throwable throwable) {
                 Log.e(TAG, "failed to upload file.", throwable);
-                msg="failed to upload file.";
+                msg = "failed to upload file.";
             }
         });
 
-        Toast.makeText(getActivity(),msg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
 
         Activity activity = getActivity();
         if (null != activity) {
