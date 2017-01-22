@@ -1,7 +1,9 @@
 package socialcops.piyush6348.com.socialcopsproblem.activities;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,7 +37,15 @@ public class UploadedData extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if(fList[i].getName().endsWith(".jpg"))
                 {
-                    
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setDataAndType(Uri.parse(fList[i].getAbsolutePath()),"image/*");
+                    startActivity(intent);
+                }
+                else
+                {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(fList[i].getAbsolutePath()));
+                    intent.setDataAndType(Uri.parse(fList[i].getAbsolutePath()), "video/mp4");
+                    startActivity(intent);
                 }
             }
         });

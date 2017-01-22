@@ -59,8 +59,6 @@ public class ImageAdapter extends BaseAdapter {
                     R.layout.grid_view_item, null);
             holder.imageview = (ImageView) convertView.findViewById(R.id.grid_item_image);
             holder.gridItemVideoOrNot=(ImageView) convertView.findViewById(R.id.grid_item_video_or_image);
-            holder.videoView = (VideoView) convertView.findViewById(R.id.grid_item_video);
-
             convertView.setTag(holder);
         }
         else {
@@ -86,6 +84,5 @@ public class ImageAdapter extends BaseAdapter {
     }
     class ViewHolder {
         ImageView imageview,gridItemVideoOrNot;
-        VideoView videoView;
     }
 }
