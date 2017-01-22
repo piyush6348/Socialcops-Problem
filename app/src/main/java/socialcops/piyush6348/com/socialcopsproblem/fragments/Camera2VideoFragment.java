@@ -11,6 +11,7 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Matrix;
@@ -58,6 +59,8 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
+import socialcops.piyush6348.com.socialcopsproblem.MainApplication;
+import socialcops.piyush6348.com.socialcopsproblem.activities.UploadedData;
 import socialcops.piyush6348.com.socialcopsproblem.model.AutoFitTextureView;
 import socialcops.piyush6348.com.socialcopsproblem.R;
 import socialcops.piyush6348.com.socialcopsproblem.utils.Constants;
@@ -277,6 +280,15 @@ public class Camera2VideoFragment extends Fragment
         View view= inflater.inflate(R.layout.fragment_camera2_video, container, false);
 
         ImageButton shiftToPicture=(ImageButton)view.findViewById(R.id.shift_to_picture);
+        Button uploadsVideoFrag=(Button) view.findViewById(R.id.uploadsV);
+
+        uploadsVideoFrag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getActivity(), UploadedData.class);
+                startActivity(intent);
+            }
+        });
         shiftToPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -685,17 +697,22 @@ public class Camera2VideoFragment extends Fragment
         mIsRecordingVideo = false;
         mButtonVideo.setText(R.string.record);
         // Stop recording
-        try{
-            mMediaRecorder.stop();
-            mMediaRecorder.reset();
-        }catch (Exception e)
-        {
-        }
 
+        Thread thread=new Thread()
+        {
+            @Override
+            public void run() {
+                super.run();
+                if(mMediaRecorder!=null)
+                {
+                    mMediaRecorder.stop();
+                    mMediaRecorder.reset();
+                }
+            }
+        };
+        thread.start();
         File file=new File(mNextVideoAbsolutePath);
-        final Client mKinveyClient = new Client.Builder(Constants.APP_ID, Constants.APP_SECRET
-                , getActivity()).build();
-        mKinveyClient.file().upload(file, new UploaderProgressListener() {
+        MainApplication.getClient().file().upload(file, new UploaderProgressListener() {
             @Override
             public void progressChanged(MediaHttpUploader mediaHttpUploader) throws IOException {
                 Log.i(TAG, "upload progress: " + mediaHttpUploader.getUploadState());

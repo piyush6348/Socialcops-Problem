@@ -33,9 +33,18 @@
             android:layout_gravity="center"
             android:text="@string/picture" />
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/uploads"
+            android:text="Uploads"
+            android:layout_gravity="center_vertical|right"
+            android:layout_margin="10dp"/>
+
         <ImageButton
             android:id="@+id/info2"
             android:contentDescription="@string/description_info"
+            android:visibility="gone"
             style="@android:style/Widget.Material.Light.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

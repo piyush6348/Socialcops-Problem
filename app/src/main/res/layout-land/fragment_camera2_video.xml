@@ -53,8 +53,17 @@
             android:layout_gravity="center"
             android:text="@string/record" />
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/uploadsV"
+            android:text="Uploads"
+            android:layout_gravity="center_horizontal|bottom"
+            android:padding="20dp"/>
+
         <ImageButton
             android:id="@+id/info"
+            android:visibility="gone"
             style="@android:style/Widget.Material.Light.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

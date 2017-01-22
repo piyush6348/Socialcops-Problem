@@ -2,86 +2,76 @@ package socialcops.piyush6348.com.socialcopsproblem.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.kinvey.android.Client;
-import com.kinvey.android.callback.KinveyPingCallback;
 import com.kinvey.android.callback.KinveyUserCallback;
 import com.kinvey.java.User;
 
+import socialcops.piyush6348.com.socialcopsproblem.MainApplication;
 import socialcops.piyush6348.com.socialcopsproblem.R;
 import socialcops.piyush6348.com.socialcopsproblem.utils.Constants;
 
 public class StartingActivity extends AppCompatActivity {
     public static String TAG;
-    private Button userSignUp,userLogin;
-    private EditText userName,userPassword;
+    private Button userSignUp, userLogin;
+    private EditText userName, userPassword;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_starting);
 
-        TAG=this.getClass().getSimpleName();
+        TAG = this.getClass().getSimpleName();
 
-        userName=(EditText)findViewById(R.id.user_name);
-        userPassword=(EditText)findViewById(R.id.user_password);
-        userSignUp=(Button)findViewById(R.id.user_signup);
-        userLogin=(Button)findViewById(R.id.user_login);
-        final Intent intent=new Intent(StartingActivity.this,CameraActivity.class);
+        userName = (EditText) findViewById(R.id.user_name);
+        userPassword = (EditText) findViewById(R.id.user_password);
+        userSignUp = (Button) findViewById(R.id.user_signup);
+        userLogin = (Button) findViewById(R.id.user_login);
+        final Intent intent = new Intent(StartingActivity.this, CameraActivity.class);
         SharedPreferences prefs = getSharedPreferences(Constants.SHARED_PREFS_NAME, MODE_PRIVATE);
         String authStr = prefs.getString("auth", null);
-        //if (authStr == "done") {
+        if (authStr == "done") {
             startActivity(intent);
             finish();
-       // }
+        }
 
-        final Client mKinveyClient = new Client.Builder(Constants.APP_ID, Constants.APP_SECRET
-                , this.getApplicationContext()).build();
-        /*
-        mKinveyClient.ping(new KinveyPingCallback() {
-            @Override
-            public void onSuccess(Boolean aBoolean) {
-                Log.d(TAG, "Kinvey Ping Success");
-            }
-
-            @Override
-            public void onFailure(Throwable throwable) {
-                Log.e(TAG, "Kinvey Ping Failed", throwable);
-            }
-        });*/
-
-
+        if (MainApplication.getClient().user().isUserLoggedIn()) {
+            startActivity(intent);
+            finish();
+        }
         userSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if(check(userName,userPassword))
-                {
-                    mKinveyClient.user().create(userName.getText().toString(),
+                if (check(userName, userPassword)) {
+                    MainApplication.getClient().user().create(userName.getText().toString(),
                             userPassword.getText().toString(), new KinveyUserCallback() {
                                 @Override
                                 public void onSuccess(User user) {
                                     CharSequence text = user.getUsername() + ", your account has been created.";
                                     Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
-                                    editSharedPreference(userName,userPassword);
+                                    editSharedPreference(userName, userPassword);
                                     startActivity(intent);
                                     finish();
                                 }
 
                                 @Override
                                 public void onFailure(Throwable throwable) {
-                                    CharSequence text = "Could not sign up.";
+                                    CharSequence text = "Already registered";
                                     Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+                                    if (MainApplication.getClient().user().isUserLoggedIn()) {
+                                        editSharedPreference(userName, userPassword);
+                                        startActivity(intent);
+                                        finish();
+                                    }
                                 }
                             });
-                }
-                else
+                } else
                     Toast.makeText(StartingActivity.this, "Please enter a valid input", Toast.LENGTH_SHORT).show();
             }
         });
@@ -90,13 +80,13 @@ public class StartingActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if(check(userName,userPassword)) {
-                    mKinveyClient.user().login(userName.getText().toString(),
+                if (check(userName, userPassword)) {
+                    MainApplication.getClient().user().login(userName.getText().toString(),
                             userPassword.getText().toString(), new KinveyUserCallback() {
                                 @Override
                                 public void onSuccess(User user) {
                                     CharSequence text = "Welcome back," + user.getUsername() + ".";
-                                    editSharedPreference(userName,userPassword);
+                                    editSharedPreference(userName, userPassword);
                                     Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
                                     startActivity(intent);
                                     finish();
@@ -108,9 +98,7 @@ public class StartingActivity extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
                                 }
                             });
-                }
-
-                else
+                } else
                     Toast.makeText(StartingActivity.this, "Please enter a valid input", Toast.LENGTH_SHORT).show();
             }
         });
@@ -118,16 +106,15 @@ public class StartingActivity extends AppCompatActivity {
 
     private void editSharedPreference(EditText userName, EditText userPassword) {
         SharedPreferences.Editor editor = getSharedPreferences(Constants.SHARED_PREFS_NAME, MODE_PRIVATE).edit();
-        editor.putString("auth","done");
+        editor.putString("auth", "done");
         editor.putString("username", userName.getText().toString());
-        editor.putString("userpassword",userPassword.getText().toString());
+        editor.putString("userpassword", userPassword.getText().toString());
         editor.commit();
     }
 
-    boolean check(EditText username,EditText password)
-    {
-        if(username.getText().toString().trim().length()!=0 &&
-                password.getText().toString().trim().length()!=0)
+    boolean check(EditText username, EditText password) {
+        if (username.getText().toString().trim().length() != 0 &&
+                password.getText().toString().trim().length() != 0)
             return true;
         else
             return false;
