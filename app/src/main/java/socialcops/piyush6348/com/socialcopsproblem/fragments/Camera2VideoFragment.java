@@ -698,6 +698,12 @@ public class Camera2VideoFragment extends Fragment
         mButtonVideo.setText(R.string.record);
         // Stop recording
 
+        try {
+            mPreviewSession.stopRepeating();
+            mPreviewSession.abortCaptures();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         Thread thread=new Thread()
         {
             @Override
