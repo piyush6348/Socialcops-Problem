@@ -848,7 +848,7 @@ public class Camera2BasicFragment extends Fragment
                                                @NonNull CaptureRequest request,
                                                @NonNull TotalCaptureResult result) {
                     showToast("Saved: " + mFile);
-                    Log.d(TAG, mFile.toString());
+                    Log.e(TAG, mFile.toString());
 
                     MainApplication.getClient().file().upload(mFile, new UploaderProgressListener() {
                         @Override
