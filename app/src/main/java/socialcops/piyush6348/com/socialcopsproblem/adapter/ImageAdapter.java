@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -64,17 +65,12 @@ public class ImageAdapter extends BaseAdapter {
         }
 
         if (fList[i].endsWith(".jpg")) {
-            //Bitmap myBitmap = BitmapFactory.decodeFile(fList[i]);
-            //holder.imageview.setVisibility(View.VISIBLE);
-           // holder.imageview.setImageBitmap(myBitmap);
             Picasso.with(context).load(new File(fList[i])).resize(500,500).into(holder.imageview);
 
         } else {
-            Bitmap thumbNail = ThumbnailUtils.createVideoThumbnail(fList[i],
-                    MediaStore.Images.Thumbnails.MINI_KIND);
             holder.gridItemVideoOrNot.setVisibility(View.VISIBLE);
             holder.gridItemVideoOrNot.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_play_circle_outline_black_24dp));
-            holder.imageview.setImageBitmap(thumbNail);
+            Glide.with(context).load(new File(fList[i])).into(holder.imageview);
         }
         return convertView;
     }

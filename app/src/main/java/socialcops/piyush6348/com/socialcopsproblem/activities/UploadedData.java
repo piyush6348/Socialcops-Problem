@@ -16,7 +16,7 @@ import socialcops.piyush6348.com.socialcopsproblem.R;
 import socialcops.piyush6348.com.socialcopsproblem.adapter.ImageAdapter;
 
 public class UploadedData extends AppCompatActivity {
-    public static String path = "/storage/emulated/0/Android/data/";
+    public  String path = "/storage/emulated/0/Android/data/";
     private GridView gridView;
     private ImageAdapter imageAdapter;
     private File[] fList;
@@ -26,7 +26,6 @@ public class UploadedData extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_uploaded_data);
 
-        path = path + "socialcops.piyush6348.com.socialcopsproblem" + "/files/";
         defineView();
         fList = loadData();
 
@@ -52,8 +51,9 @@ public class UploadedData extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 
     @Override
@@ -70,6 +70,7 @@ public class UploadedData extends AppCompatActivity {
 
     private File[] loadData() {
 
+        path = path + "socialcops.piyush6348.com.socialcopsproblem" + "/files/";
         final String[] EXTENSIONS = new String[]{
                 "jpg", "mp4" // and other formats you need
         };
@@ -99,29 +100,8 @@ public class UploadedData extends AppCompatActivity {
             fPath=new String[filelist.length];
             for(int i=0;i<filelist.length;i++)
                 fPath[i]=filelist[i].getAbsolutePath();
-
         }
         return filelist;
-        /*
-        Query q=MainApplication.getClient().query();
-        q.equals("_acl.creator",MainApplication.getClient().user().getId());
-        final AsyncAppData<> imgVid= MainApplication.getClient().appData("_downloadURL",);
-        imgVid.get(q, new KinveyListCallback() {
-            @Override
-            public void onSuccess(Object[] objects) {
-
-            }
-
-            @Override
-            public void onFailure(Throwable throwable) {
-
-            }
-
-            @Override
-            public void onSuccess(Object o) {
-
-            }
-        });*/
     }
 
     private void defineView() {
