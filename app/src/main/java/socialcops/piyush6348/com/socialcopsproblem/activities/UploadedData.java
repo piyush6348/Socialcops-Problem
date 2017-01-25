@@ -20,7 +20,7 @@ public class UploadedData extends AppCompatActivity {
     private GridView gridView;
     private ImageAdapter imageAdapter;
     private File[] fList;
-
+    private String[] fPath;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,22 +29,43 @@ public class UploadedData extends AppCompatActivity {
         path = path + "socialcops.piyush6348.com.socialcopsproblem" + "/files/";
         defineView();
         fList = loadData();
-        imageAdapter = new ImageAdapter(fList, UploadedData.this);
-        gridView.setAdapter(imageAdapter);
+
+        if(fList!=null)
+        {
+            imageAdapter = new ImageAdapter(fPath, UploadedData.this);
+            gridView.setAdapter(imageAdapter);
+        }
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if (fList[i].getName().endsWith(".jpg")) {
+                if (fPath[i].endsWith(".jpg")) {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setDataAndType(Uri.parse(fList[i].getAbsolutePath()), "image/*");
+                    intent.setDataAndType(Uri.parse(fPath[i]), "image/*");
                     startActivity(intent);
                 } else {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(fList[i].getAbsolutePath()));
-                    intent.setDataAndType(Uri.parse(fList[i].getAbsolutePath()), "video/mp4");
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(fPath[i]));
+                    intent.setDataAndType(Uri.parse(fPath[i]), "video/mp4");
                     startActivity(intent);
                 }
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        fList = loadData();
+
+        if(fList!=null)
+        {
+            imageAdapter = new ImageAdapter(fPath, UploadedData.this);
+            gridView.setAdapter(imageAdapter);
+        }
     }
 
     private File[] loadData() {
@@ -73,6 +94,13 @@ public class UploadedData extends AppCompatActivity {
         Log.e("loadData: ", dir.getAbsolutePath() + "hi");
         File[] filelist = dir.listFiles(IMAGE_FILTER);
 
+        if(filelist!=null)
+        {
+            fPath=new String[filelist.length];
+            for(int i=0;i<filelist.length;i++)
+                fPath[i]=filelist[i].getAbsolutePath();
+
+        }
         return filelist;
         /*
         Query q=MainApplication.getClient().query();

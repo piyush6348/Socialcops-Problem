@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
+
 import java.io.File;
 
 import socialcops.piyush6348.com.socialcopsproblem.R;
@@ -22,10 +24,10 @@ import socialcops.piyush6348.com.socialcopsproblem.R;
 
 public class ImageAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
-    File[] fList;
+    String[] fList;
     Context context;
 
-    public ImageAdapter(File[] fList, Context con) {
+    public ImageAdapter(String[] fList, Context con) {
         this.fList = fList;
         this.context = con;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -61,13 +63,14 @@ public class ImageAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        if (fList[i].getName().endsWith(".jpg")) {
-            Bitmap myBitmap = BitmapFactory.decodeFile(fList[i].getAbsolutePath());
+        if (fList[i].endsWith(".jpg")) {
+            //Bitmap myBitmap = BitmapFactory.decodeFile(fList[i]);
             //holder.imageview.setVisibility(View.VISIBLE);
-            holder.imageview.setImageBitmap(myBitmap);
+           // holder.imageview.setImageBitmap(myBitmap);
+            Picasso.with(context).load(new File(fList[i])).resize(500,500).into(holder.imageview);
 
         } else {
-            Bitmap thumbNail = ThumbnailUtils.createVideoThumbnail(fList[i].getAbsolutePath(),
+            Bitmap thumbNail = ThumbnailUtils.createVideoThumbnail(fList[i],
                     MediaStore.Images.Thumbnails.MINI_KIND);
             holder.gridItemVideoOrNot.setVisibility(View.VISIBLE);
             holder.gridItemVideoOrNot.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_play_circle_outline_black_24dp));
